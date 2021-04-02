@@ -8,20 +8,23 @@ class PopupAddTask extends Component {
 
         this.state = {
             title: "",
-            hours: ""
+            hours: "",
+            curTime: new Date().toLocaleDateString()
         }
     }
 
     handleSubmit = () => {
-        console.log(this.state.title + ", " + this.state.hours);
+        console.log(this.state.title + ", " + this.state.hours + ", " + this.state.curTime);
     }
 
     handleClick = () => {
         if(
             this.state.title.trim() !== "" &&
-            this.state.hours > 0
+            this.state.hours > 0 
         )
-            this.props.addTask(this.state.title, this.state.hours);
+            if(window.confirm("Add new task?")){
+                this.props.addTask(this.state.title, this.state.hours, this.state.curTime);
+            }
         else
             alert("You have empty fields, hours field must be greater then 0.")
     }
@@ -50,13 +53,14 @@ class PopupAddTask extends Component {
                     <h2>Create a task:</h2>
                     <form onSubmit = {this.handleSubmit}>
                         <div className='field-wrap'>
-                            <label className='label' for='title'>Title:</label>
+                            <label className='label' htmlFor='title'>Title:</label>
                             <input className='field' id='title' name='title' type='text' required value={this.state.title} onChange={this.handleChangeTitle}/>
                         </div>
                         <div className='field-wrap'>
-                            <label className='label' for='hours'>Hours:</label>
+                            <label className='label' htmlFor='hours'>Hours:</label>
                             <input className='field' id='hours' name='hours' type='number' required value={this.state.hours} onChange={this.handleChangeHours}/>
                         </div>
+                        <input type="hidden" name="date" value={this.state.curTime}/>
                         <div className='btn-wrap align-right'>
                             <input className={this.submitClasses()} type='submit' value='Create' onClick={this.handleClick}/>
                         </div>
@@ -69,8 +73,8 @@ class PopupAddTask extends Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        addTask: (title, hours) => {
-            dispatch(addTask(title,hours))
+        addTask: (title, hours, date) => {
+            dispatch(addTask(title,hours, date))
         }
     }
 }

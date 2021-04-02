@@ -52,7 +52,7 @@ class Header extends Component {
                             <time>{this.state.curTime}</time>
                         </div>
                         </h1>
-                    </div>  
+                    </div>
                 </header>
         )
     }
